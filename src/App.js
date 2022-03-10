@@ -4,19 +4,24 @@ import UploadForm from "./components/uploadForm";
 import ImageGrid from "./components/imageGrid";
 import React, { useEffect, useState } from "react";
 import Modal from "./components/modal";
+import Login from "./components/login";
+import LoginInfo from "./components/loginInfo";
 
 function App() {
   const [selectedImg, setSelectedImg] = useState(null);
-
+  const [user, setUser] = useState(null);
   return (
-    <React.Fragment>
+    <>
       <Title />
-      <UploadForm />
-      <ImageGrid setSelectedImg={setSelectedImg} />
+      {user && <LoginInfo user={user} />}
+      {!user && <Login user={user} setUser={setUser} />}
+      {user && <UploadForm user={user} />}
+      {user && <h2 className="text-center">Your Pictures</h2>}
+      {user && <ImageGrid setSelectedImg={setSelectedImg} user={user} />}
       {selectedImg && (
         <Modal selectedImg={selectedImg} setSelectedImg={setSelectedImg} />
       )}
-    </React.Fragment>
+    </>
   );
 }
 

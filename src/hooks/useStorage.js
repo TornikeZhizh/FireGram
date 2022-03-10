@@ -7,7 +7,7 @@ import {
 import { ref, uploadBytesResumable, getDownloadURL } from "@firebase/storage";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
-const useStorage = (file) => {
+const useStorage = (file, user) => {
   const [progress, setProgress] = useState(null);
   const [error, setError] = useState(null);
   const [url, setUrl] = useState(null);
@@ -29,7 +29,11 @@ const useStorage = (file) => {
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((u) => {
           setUrl(u);
-          addDoc(collectionRef, { url: u, createdAt: serverTimestamp() });
+          addDoc(collectionRef, {
+            url: u,
+            createdAt: serverTimestamp(),
+            userId: user.uid
+          });
         });
       }
     );
